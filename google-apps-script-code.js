@@ -3,14 +3,21 @@
 
 function doPost(e) {
   try {
-    // Настройка CORS заголовков
-    const response = ContentService.createTextOutput();
+    console.log('Получен POST запрос:', e);
+    console.log('postData.contents:', e.postData ? e.postData.contents : 'Нет данных');
+    console.log('parameters:', e.parameter);
     
     // Получаем данные из запроса
     let data;
     try {
-      data = JSON.parse(e.postData.contents);
+      if (e.postData && e.postData.contents) {
+        data = JSON.parse(e.postData.contents);
+        console.log('Данные из JSON:', data);
+      } else {
+        throw new Error('Нет данных в postData.contents');
+      }
     } catch (parseError) {
+      console.log('Ошибка парсинга JSON:', parseError);
       // Если не удалось распарсить JSON, пробуем получить данные из параметров
       data = {
         name: e.parameter.name || '',
@@ -18,6 +25,7 @@ function doPost(e) {
         consultation: e.parameter.consultation || '',
         timestamp: e.parameter.timestamp || new Date().toLocaleString('ru-RU')
       };
+      console.log('Данные из параметров:', data);
     }
     
     // Валидация данных
@@ -27,22 +35,32 @@ function doPost(e) {
     
     // Получаем активную таблицу
     const sheet = SpreadsheetApp.getActiveSheet();
+    console.log('Активная таблица:', sheet.getName());
     
     // Проверяем, есть ли заголовки в первой строке
     const lastRow = sheet.getLastRow();
+    console.log('Последняя строка до добавления:', lastRow);
+    
     if (lastRow === 0) {
       // Добавляем заголовки, если таблица пустая
+      console.log('Добавляем заголовки');
       sheet.getRange(1, 1, 1, 4).setValues([['Имя', 'Телефон', 'Тип консультации', 'Дата и время']]);
       sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
     }
     
     // Добавляем новую строку с данными
-    sheet.appendRow([
+    const rowData = [
       data.name,
       data.phone,
       data.consultation,
       data.timestamp
-    ]);
+    ];
+    console.log('Добавляем строку:', rowData);
+    
+    sheet.appendRow(rowData);
+    
+    const newLastRow = sheet.getLastRow();
+    console.log('Последняя строка после добавления:', newLastRow);
     
     // Возвращаем успешный ответ с CORS заголовками
     return ContentService
