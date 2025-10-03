@@ -89,7 +89,7 @@ function App() {
     setIsSubmitting(true);
 
     // Google Sheets Web App URL
-    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx6shSoMwgrM5N6DvQdTMBd697QbHZ0WKV52vdq-67zuJ5HHJnjAwo7z0XsAlEROga-/exec';
+    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyh78RxwFjNwNM93AFiFvM1nF9P6vl-M3twiHz6ek-u2w0gbc5H5k9oRSDgH5nBowAw/exec';
     
     const dataToSend = {
       name: formData.name.trim(),
@@ -99,19 +99,22 @@ function App() {
     };
 
     try {
+      // Создаем FormData для отправки данных
+      const formData = new FormData();
+      formData.append('name', dataToSend.name);
+      formData.append('phone', dataToSend.phone);
+      formData.append('consultation', dataToSend.consultation);
+      formData.append('timestamp', dataToSend.timestamp);
+
       const response = await fetch(GOOGLE_SHEETS_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend)
+        mode: 'no-cors', // Добавляем режим no-cors для обхода CORS
+        body: formData // Используем FormData вместо JSON
       });
       
-      if (response.ok) {
-        setIsSubmitted(true);
-      } else {
-        throw new Error('Ошибка сервера');
-      }
+      // При использовании mode: 'no-cors' response.ok всегда будет false
+      // Поэтому считаем запрос успешным, если нет исключения
+      setIsSubmitted(true);
     } catch (error) {
       console.error('Ошибка отправки формы:', error);
       showNotification('Произошла ошибка при отправке формы. Попробуйте еще раз.', 'error');
