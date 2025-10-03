@@ -711,7 +711,8 @@
 .logo {
   width: fit-content;
   height: 50px;
-  object-fit: contain;
+  width: 100px;
+  object-fit: cover;
 }
 
 .logo-container {
@@ -725,6 +726,7 @@
 .logo2 {
   width: fit-content;
   height: 50px;
-  object-fit: contain;
+  width: 50px;
+  object-fit: cover;
   border-radius: 100%;
 } 
