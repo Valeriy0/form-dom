@@ -710,7 +710,7 @@
 
 .logo {
   width: fit-content;
-  height: 50px;
+  height: 64px;
   width: 100px;
   object-fit: cover;
 }
@@ -725,8 +725,8 @@
 
 .logo2 {
   width: fit-content;
-  height: 50px;
-  width: 50px;
+  height: 64px;
+  width: 64px;
   object-fit: cover;
   border-radius: 100%;
 } 
