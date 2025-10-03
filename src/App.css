@@ -4,7 +4,9 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: 
+    url('./assets/background.webp') center center / cover no-repeat,
+    linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   position: relative;
   overflow: hidden;
 }
@@ -705,3 +707,24 @@
     font-size: 13px;
   }
 }
+
+.logo {
+  width: fit-content;
+  height: 50px;
+  object-fit: contain;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.logo2 {
+  width: fit-content;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 100%;
+} 

@@ -192,7 +192,10 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: isMobile ? 0.1 : 0.2, duration: isMobile ? 0.3 : 0.5 }}
         >
-          <div className="icon">🏠</div>
+          <div className="logo-container">
+            <img src="/logo.webp" alt="logo" className="logo" />
+            <img src="/logo2.webp" alt="logo2" className="logo2" />
+          </div>
           <h1>Подтверждение участия</h1>
           <p>Оставьте свои контакты, забронировав для себя гарантированный приз на выбор при совершении сделки, как участник мероприятия</p>
         </motion.div>
