@@ -9,23 +9,27 @@ function doPost(e) {
     
     // Получаем данные из запроса
     let data;
-    try {
-      if (e.postData && e.postData.contents) {
-        data = JSON.parse(e.postData.contents);
-        console.log('Данные из JSON:', data);
-      } else {
-        throw new Error('Нет данных в postData.contents');
-      }
-    } catch (parseError) {
-      console.log('Ошибка парсинга JSON:', parseError);
-      // Если не удалось распарсить JSON, пробуем получить данные из параметров
+    
+    // Сначала пробуем получить данные из параметров (FormData)
+    if (e.parameter && (e.parameter.name || e.parameter.phone || e.parameter.consultation)) {
       data = {
         name: e.parameter.name || '',
         phone: e.parameter.phone || '',
         consultation: e.parameter.consultation || '',
         timestamp: e.parameter.timestamp || new Date().toLocaleString('ru-RU')
       };
-      console.log('Данные из параметров:', data);
+      console.log('Данные из параметров (FormData):', data);
+    } else if (e.postData && e.postData.contents) {
+      // Если нет параметров, пробуем JSON
+      try {
+        data = JSON.parse(e.postData.contents);
+        console.log('Данные из JSON:', data);
+      } catch (parseError) {
+        console.log('Ошибка парсинга JSON:', parseError);
+        throw new Error('Не удалось получить данные из запроса');
+      }
+    } else {
+      throw new Error('Нет данных в запросе');
     }
     
     // Валидация данных
